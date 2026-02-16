@@ -1,6 +1,7 @@
 import GothamBackground from "@/components/GothamBackground";
 import Navigation from "@/components/Navigation";
 import NightVisionToggle from "@/components/NightVisionToggle";
+import CursorTrail from "@/components/CursorTrail";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
@@ -13,6 +14,7 @@ const Index = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden animate-flicker">
       <GothamBackground />
+      <CursorTrail />
       <Navigation />
       <NightVisionToggle />
 

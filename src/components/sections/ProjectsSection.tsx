@@ -9,36 +9,42 @@ const projects = [
     status: "LIVE",
     stack: ["React", "Node.js", "MongoDB", "CoinGecko API"],
     evidence: "Built real-time crypto trading simulator with portfolio tracking, watchlists, and live market data integration.",
+    url: "https://cryptmaster.example.com",
   },
   {
     name: "FOCUSPILOT",
     status: "LIVE",
     stack: ["React", "FastAPI", "MongoDB", "OpenAI"],
     evidence: "AI-driven task manager that auto-generates subtasks and tracks productivity metrics with intelligent prioritization.",
+    url: "https://focuspilot.example.com",
   },
   {
     name: "OFFCET / EDGES+",
     status: "DEPLOYED",
     stack: ["React", "Next.js", "Tailwind"],
     evidence: "Carbon offsetting platform for MetaShot — client-facing dashboards tracking environmental impact metrics.",
+    url: "https://offcet.example.com",
   },
   {
     name: "IPfy",
     status: "PROTOTYPE",
     stack: ["Blockchain", "React", "Node.js"],
     evidence: "Decentralized intellectual property registration system using blockchain for immutable proof of ownership.",
+    url: "https://ipfy.example.com",
   },
   {
     name: "RUNNER",
     status: "LIVE",
     stack: ["React", "Node.js", "Docker"],
     evidence: "Online coding platform with multi-language support, real-time code execution, and sandboxed environments.",
+    url: "https://runner.example.com",
   },
   {
     name: "SAVIOUR",
     status: "LIVE",
     stack: ["React", "Node.js", "Encryption"],
     evidence: "Military-grade encrypted file and password storage with zero-knowledge architecture.",
+    url: "https://saviour.example.com",
   },
 ];
 
@@ -89,12 +95,25 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{project.evidence}</p>
 
-        <div className="flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <span key={tech} className="text-[10px] text-accent/80 border border-accent/20 px-2 py-0.5 tracking-wide">
-              {tech}
-            </span>
-          ))}
+        <div className="flex items-center justify-between mt-4">
+          <div className="flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
+              <span key={tech} className="text-[10px] text-accent/80 border border-accent/20 px-2 py-0.5 tracking-wide">
+                {tech}
+              </span>
+            ))}
+          </div>
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-[10px] tracking-wider text-primary border border-primary/40 px-3 py-1 hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
+            >
+              <ExternalLink className="w-3 h-3" />
+              OPEN
+            </a>
+          )}
         </div>
       </div>
     </motion.div>
