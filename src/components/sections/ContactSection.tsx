@@ -7,7 +7,7 @@ const links = [
   { icon: Phone, label: "+91 9072760818", href: "tel:+919072760818" },
   { icon: Github, label: "GitHub", href: "https://github.com/azmisal" },
   { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/azmisal/" },
-  { icon: Globe, label: "Portfolio", href: "https://azmisaleem.dev" },
+  { icon: Globe, label: "Portfolio", href: "https://bat-folio-gold.vercel.app/" },
 ];
 
 const ContactSection = () => {
