@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import SectionWrapper from "../SectionWrapper";
 import { Lock, ExternalLink } from "lucide-react";
+import { triggerBatSwarm } from "@/lib/batSwarmEvent";
 
 const projects = [
   {
@@ -70,6 +71,11 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
+  const handleOpen = () => {
+    triggerBatSwarm();
+    window.open(project.url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <motion.div
       ref={ref}
@@ -104,15 +110,13 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
             ))}
           </div>
           {project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={handleOpen}
               className="flex items-center gap-1 text-[10px] tracking-wider text-primary border border-primary/40 px-3 py-1 hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
             >
               <ExternalLink className="w-3 h-3" />
               OPEN
-            </a>
+            </button>
           )}
         </div>
       </div>
