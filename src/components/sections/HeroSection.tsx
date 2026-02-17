@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import BatSymbol3D from "../BatSymbol3D";
+import { triggerBatSwarm } from "@/lib/batSwarmEvent";
 
 const HeroSection = () => {
   const scrollToContact = () => {
+    triggerBatSwarm();
     document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
