@@ -28,7 +28,7 @@ function createBoid(x: number, y: number): Boid {
     vy: Math.sin(angle) * speed,
     life: 0,
     maxLife: 1.5 + Math.random() * 1.5,
-    size: 4 + Math.random() * 6,
+    size: 20 + Math.random() * 30,
     wingPhase: Math.random() * Math.PI * 2,
     wingSpeed: 8 + Math.random() * 6,
   };
