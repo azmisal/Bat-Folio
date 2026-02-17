@@ -10,10 +10,12 @@ import SkillsSection from "@/components/sections/SkillsSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import AchievementsSection from "@/components/sections/AchievementsSection";
 import ContactSection from "@/components/sections/ContactSection";
+import { triggerBatSwarm } from "@/lib/batSwarmEvent";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden animate-flicker">
+    
+    <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden animate-flicker" onClick={() => triggerBatSwarm()}>
       <GothamBackground />
       <CursorTrail />
       <BatSwarm />

@@ -4,7 +4,6 @@ import { triggerBatSwarm } from "@/lib/batSwarmEvent";
 
 const HeroSection = () => {
   const scrollToContact = () => {
-    triggerBatSwarm();
     document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
   };
 

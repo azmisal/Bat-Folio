@@ -13,12 +13,12 @@ interface Boid {
 }
 
 const BOID_COUNT = 35;
-const MAX_SPEED = 2.5;
+const MAX_SPEED = 14;
 const SEPARATION_DIST = 40;
 
 function createBoid(x: number, y: number): Boid {
   const angle = Math.random() * Math.PI * 2;
-  const speed = 0.8 + Math.random() * 1.2;
+  const speed = 1.8 + Math.random() * 2.2;
   return {
     x,
     y,
@@ -26,9 +26,9 @@ function createBoid(x: number, y: number): Boid {
     vy: Math.sin(angle) * speed,
     life: 0,
     maxLife: 4 + Math.random() * 3,
-    size: 30 + Math.random() * 30,
+    size: 50 + Math.random() * 40,
     wingPhase: Math.random() * Math.PI * 2,
-    wingSpeed: 3 + Math.random() * 2,
+    wingSpeed: 1 + Math.random() * 1,
   };
 }
 
@@ -42,14 +42,12 @@ function drawBat(ctx: CanvasRenderingContext2D, b: Boid, alpha: number) {
   ctx.rotate(angle + Math.PI);
   ctx.globalAlpha = alpha;
 
-  // Wing lift amount
-  const lift = wing * s * 0.35;
+  // Wing lift/fold amount
+  const lift = wing * s * 0.5;
+  const flapAmount = Math.abs(wing) * 0.15; // Wing contraction on down beat
 
   ctx.fillStyle = "#111";
   ctx.beginPath();
-
-  // --- Body center (small oval) ---
-  // We'll draw the whole bat as one path
 
   // Head top
   ctx.moveTo(0, -s * 0.06);
@@ -58,50 +56,166 @@ function drawBat(ctx: CanvasRenderingContext2D, b: Boid, alpha: number) {
   ctx.lineTo(s * 0.04, -s * 0.16);
   ctx.lineTo(s * 0.08, -s * 0.06);
 
-  // Right wing — top edge, curves up with lift
+  // === RIGHT WING - ANATOMICALLY CORRECT CONCAVE STRUCTURE ===
+
+  // Thumb - short, fat finger near body
   ctx.bezierCurveTo(
-    s * 0.15, -s * 0.1 + lift * 0.3,
-    s * 0.3, -s * 0.15 + lift * 0.7,
-    s * 0.5, -s * 0.05 + lift
+    s * 0.1, -s * 0.04 + lift * 0.1,
+    s * 0.12, s * 0.02 + lift * 0.05,
+    s * 0.11, s * 0.05
   );
 
-  // Wing tip
+  // Scallop between thumb and index
   ctx.bezierCurveTo(
-    s * 0.52, lift * 0.9,
-    s * 0.48, s * 0.04 + lift * 0.6,
-    s * 0.4, s * 0.06 + lift * 0.4
+    s * 0.15, s * 0.075,
+    s * 0.18, s * 0.06,
+    s * 0.2, s * 0.065
   );
 
-  // Right wing scallops (3 finger points)
-  ctx.bezierCurveTo(s * 0.38, s * 0.1 + lift * 0.3, s * 0.34, s * 0.04 + lift * 0.25, s * 0.3, s * 0.06 + lift * 0.2);
-  ctx.bezierCurveTo(s * 0.28, s * 0.1 + lift * 0.15, s * 0.24, s * 0.04 + lift * 0.1, s * 0.2, s * 0.06 + lift * 0.08);
-  ctx.bezierCurveTo(s * 0.16, s * 0.09, s * 0.12, s * 0.05, s * 0.08, s * 0.06);
+  // Index finger - longest, extends far
+  ctx.lineTo(s * 0.28, -s * 0.06 + lift * 0.8);
 
-  // Right body
-  ctx.bezierCurveTo(s * 0.05, s * 0.08, s * 0.03, s * 0.1, s * 0.01, s * 0.12);
+  // Concave membrane between index and middle (INWARD curve)
+  ctx.bezierCurveTo(
+    s * 0.36, -s * 0.08 + lift * 0.6,
+    s * 0.42, -s * 0.04 + lift * 0.5,
+    s * 0.46, s * 0.03 + lift * 0.4
+  );
+
+  // Scallop between index and middle
+  ctx.bezierCurveTo(
+    s * 0.48, s * 0.06,
+    s * 0.46, s * 0.08,
+    s * 0.42, s * 0.075
+  );
+
+  // Middle finger - medium length
+  ctx.lineTo(s * 0.52, -s * 0.02 + lift * 0.65);
+
+  // Concave membrane between middle and ring (INWARD curve)
+  ctx.bezierCurveTo(
+    s * 0.54, -s * 0.01 + lift * 0.5,
+    s * 0.56, s * 0.03 + lift * 0.4,
+    s * 0.57, s * 0.06 + lift * 0.3
+  );
+
+  // Scallop between middle and ring
+  ctx.bezierCurveTo(
+    s * 0.565, s * 0.09,
+    s * 0.54, s * 0.09,
+    s * 0.5, s * 0.08
+  );
+
+  // Ring finger - shorter
+  ctx.lineTo(s * 0.56, -s * 0.015 + lift * 0.55);
+
+  // Concave membrane between ring and pinky (INWARD curve)
+  ctx.bezierCurveTo(
+    s * 0.565, s * 0.02 + lift * 0.35,
+    s * 0.57, s * 0.055 + lift * 0.25,
+    s * 0.568, s * 0.085
+  );
+
+  // Scallop between ring and pinky
+  ctx.bezierCurveTo(
+    s * 0.555, s * 0.095,
+    s * 0.52, s * 0.09,
+    s * 0.46, s * 0.08
+  );
+
+  // Pinky finger - shortest, uropatagium support
+  ctx.lineTo(s * 0.5, -s * 0.01 + lift * 0.45);
+
+  // Uropatagium (tail membrane) - concave inward
+  ctx.bezierCurveTo(
+    s * 0.35, s * 0.06 + lift * 0.2,
+    s * 0.15, s * 0.09,
+    s * 0.04, s * 0.08
+  );
+
+  // Right body side
+  ctx.bezierCurveTo(s * 0.02, s * 0.1, s * 0.005, s * 0.12, -s * 0.001, s * 0.13);
 
   // Tail
-  ctx.quadraticCurveTo(0, s * 0.15, -s * 0.01, s * 0.12);
+  ctx.quadraticCurveTo(0, s * 0.16, s * 0.001, s * 0.13);
 
-  // Left body
-  ctx.bezierCurveTo(-s * 0.03, s * 0.1, -s * 0.05, s * 0.08, -s * 0.08, s * 0.06);
+  // Left body side - mirror
+  ctx.bezierCurveTo(-s * 0.005, s * 0.12, -s * 0.02, s * 0.1, -s * 0.04, s * 0.08);
 
-  // Left wing scallops (mirrored)
-  ctx.bezierCurveTo(-s * 0.12, s * 0.05, -s * 0.16, s * 0.09, -s * 0.2, s * 0.06 + lift * 0.08);
-  ctx.bezierCurveTo(-s * 0.24, s * 0.04 + lift * 0.1, -s * 0.28, s * 0.1 + lift * 0.15, -s * 0.3, s * 0.06 + lift * 0.2);
-  ctx.bezierCurveTo(-s * 0.34, s * 0.04 + lift * 0.25, -s * 0.38, s * 0.1 + lift * 0.3, -s * 0.4, s * 0.06 + lift * 0.4);
+  // === LEFT WING - MIRRORED CONCAVE STRUCTURE ===
 
-  // Left wing tip
+  // Uropatagium (tail membrane) - concave inward
   ctx.bezierCurveTo(
-    -s * 0.48, s * 0.04 + lift * 0.6,
-    -s * 0.52, lift * 0.9,
-    -s * 0.5, -s * 0.05 + lift
+    -s * 0.15, s * 0.09,
+    -s * 0.35, s * 0.06 + lift * 0.2,
+    -s * 0.5, -s * 0.01 + lift * 0.45
   );
 
-  // Left wing top edge
+  // Pinky finger - shortest
+  ctx.lineTo(-s * 0.46, s * 0.08);
+
+  // Scallop between ring and pinky (mirrored)
   ctx.bezierCurveTo(
-    -s * 0.3, -s * 0.15 + lift * 0.7,
-    -s * 0.15, -s * 0.1 + lift * 0.3,
+    -s * 0.52, s * 0.09,
+    -s * 0.555, s * 0.095,
+    -s * 0.568, s * 0.085
+  );
+
+  // Concave membrane between ring and pinky (INWARD curve)
+  ctx.bezierCurveTo(
+    -s * 0.57, s * 0.055 + lift * 0.25,
+    -s * 0.565, s * 0.02 + lift * 0.35,
+    -s * 0.56, -s * 0.015 + lift * 0.55
+  );
+
+  // Ring finger - shorter
+  ctx.lineTo(-s * 0.5, s * 0.08);
+
+  // Scallop between middle and ring (mirrored)
+  ctx.bezierCurveTo(
+    -s * 0.54, s * 0.09,
+    -s * 0.565, s * 0.09,
+    -s * 0.57, s * 0.06 + lift * 0.3
+  );
+
+  // Concave membrane between middle and ring (INWARD curve)
+  ctx.bezierCurveTo(
+    -s * 0.56, s * 0.03 + lift * 0.4,
+    -s * 0.54, -s * 0.01 + lift * 0.5,
+    -s * 0.52, -s * 0.02 + lift * 0.65
+  );
+
+  // Middle finger - medium length
+  ctx.lineTo(-s * 0.42, s * 0.075);
+
+  // Scallop between index and middle (mirrored)
+  ctx.bezierCurveTo(
+    -s * 0.46, s * 0.08,
+    -s * 0.48, s * 0.06,
+    -s * 0.46, s * 0.03 + lift * 0.4
+  );
+
+  // Concave membrane between index and middle (INWARD curve)
+  ctx.bezierCurveTo(
+    -s * 0.42, -s * 0.04 + lift * 0.5,
+    -s * 0.36, -s * 0.08 + lift * 0.6,
+    -s * 0.28, -s * 0.06 + lift * 0.8
+  );
+
+  // Index finger - longest
+  ctx.lineTo(-s * 0.2, s * 0.065);
+
+  // Scallop between thumb and index (mirrored)
+  ctx.bezierCurveTo(
+    -s * 0.18, s * 0.06,
+    -s * 0.15, s * 0.075,
+    -s * 0.11, s * 0.05
+  );
+
+  // Thumb - short, fat finger
+  ctx.bezierCurveTo(
+    -s * 0.12, s * 0.02 + lift * 0.05,
+    -s * 0.1, -s * 0.04 + lift * 0.1,
     -s * 0.08, -s * 0.06
   );
 
@@ -112,9 +226,44 @@ function drawBat(ctx: CanvasRenderingContext2D, b: Boid, alpha: number) {
   ctx.closePath();
   ctx.fill();
 
-  // Subtle dark outline
-  ctx.strokeStyle = `rgba(0,0,0,${alpha * 0.5})`;
+  // Wing bone structure lines (subtle)
+  ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.25})`;
+  ctx.lineWidth = 0.4;
+
+  // Right wing bones
+  const rightBones = [
+    { start: [0.08, -0.06], end: [0.28, -0.06 + lift * 0.8], name: "index" },
+    { start: [0.075, 0.02], end: [0.52, -0.02 + lift * 0.65], name: "middle" },
+    { start: [0.065, 0.04], end: [0.56, -0.015 + lift * 0.55], name: "ring" },
+  ];
+
+  rightBones.forEach(bone => {
+    ctx.beginPath();
+    ctx.moveTo(bone.start[0] * s, bone.start[1] * s);
+    ctx.lineTo(bone.end[0] * s, bone.end[1] * s);
+    ctx.stroke();
+  });
+
+  // Left wing bones (mirrored)
+  rightBones.forEach(bone => {
+    ctx.beginPath();
+    ctx.moveTo(-bone.start[0] * s, bone.start[1] * s);
+    ctx.lineTo(-bone.end[0] * s, bone.end[1] * s);
+    ctx.stroke();
+  });
+
+  // Ear outlines
+  ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.5})`;
   ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(0, -s * 0.06);
+  ctx.lineTo(s * 0.04, -s * 0.16);
+  ctx.lineTo(s * 0.08, -s * 0.06);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, -s * 0.06);
+  ctx.lineTo(-s * 0.04, -s * 0.16);
+  ctx.lineTo(-s * 0.08, -s * 0.06);
   ctx.stroke();
 
   // Glowing eyes
@@ -136,14 +285,43 @@ const BatSwarm = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const swarms = useRef<Boid[][]>([]);
   const animRef = useRef<number>(0);
+  const lastCornerRef = useRef<number>(-1);
 
   const triggerSwarm = useCallback(() => {
     const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    // Select a random corner different from the last one
+    const corners = [0, 1, 2, 3];
+    const availableCorners = corners.filter(c => c !== lastCornerRef.current);
+    const corner = availableCorners[Math.floor(Math.random() * availableCorners.length)];
+    lastCornerRef.current = corner;
+
+    let cornerX = 0, cornerY = 0;
+    switch (corner) {
+      case 0: // top-left
+        cornerX = 0;
+        cornerY = 0;
+        break;
+      case 1: // top-right
+        cornerX = w;
+        cornerY = 0;
+        break;
+      case 2: // bottom-left
+        cornerX = 0;
+        cornerY = h;
+        break;
+      case 3: // bottom-right
+        cornerX = w;
+        cornerY = h;
+        break;
+    }
+
     const boids: Boid[] = [];
     for (let i = 0; i < BOID_COUNT; i++) {
       boids.push(createBoid(
-        w * 0.6 + (Math.random() - 0.5) * w * 0.3,
-        (Math.random() - 0.3) * 100
+        cornerX + (Math.random() - 0.5) * 150,
+        cornerY + (Math.random() - 0.5) * 150
       ));
     }
     swarms.current.push(boids);

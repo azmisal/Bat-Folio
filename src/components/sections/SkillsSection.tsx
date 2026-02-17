@@ -23,9 +23,9 @@ const categories = [
     icon: Swords,
     skills: [
       { name: "React.js", level: 95 },
-      { name: "Next.js", level: 80 },
+      { name: "Next.js", level: 60 },
       { name: "HTML5 / CSS3", level: 90 },
-      { name: "Three.js / R3F", level: 65 },
+      { name: "AI tools", level: 80 },
       { name: "Tailwind CSS", level: 88 },
       { name: "Figma", level: 70 },
     ],
@@ -40,7 +40,7 @@ const categories = [
       { name: "Cross-functional Collab", level: 88 },
       { name: "System Design", level: 78 },
       { name: "Performance Optimization", level: 82 },
-      { name: "Git / CI/CD", level: 85 },
+      { name: "Git", level: 85 },
     ],
   },
 ];

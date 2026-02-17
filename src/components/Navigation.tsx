@@ -20,9 +20,9 @@ const Navigation = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-40 bg-background/70 backdrop-blur-md border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="text-primary font-bold text-sm tracking-widest text-glow">
-          BAT://COMPUTER
+          AZMI SALEEM - BATFOLIO
         </span>
 
         {/* Desktop */}
@@ -31,7 +31,7 @@ const Navigation = () => {
             <button
               key={item.href}
               onClick={() => scrollTo(item.href)}
-              className="text-xs tracking-wider text-muted-foreground hover:text-primary transition-colors duration-200"
+              className="text-sm tracking-wider text-muted-foreground hover:text-primary transition-colors duration-200"
             >
               {item.label}
             </button>
@@ -51,7 +51,7 @@ const Navigation = () => {
             <button
               key={item.href}
               onClick={() => scrollTo(item.href)}
-              className="block w-full text-left px-6 py-3 text-xs tracking-wider text-muted-foreground hover:text-primary hover:bg-secondary/50 transition-colors"
+              className="block w-full text-left px-6 py-3 text-sm tracking-wider text-muted-foreground hover:text-primary hover:bg-secondary/50 transition-colors"
             >
               {item.label}
             </button>

@@ -5,8 +5,8 @@ import { triggerBatSwarm } from "@/lib/batSwarmEvent";
 const links = [
   { icon: Mail, label: "azmisaleem96@gmail.com", href: "mailto:azmisaleem96@gmail.com" },
   { icon: Phone, label: "+91 9072760818", href: "tel:+919072760818" },
-  { icon: Github, label: "GitHub", href: "https://github.com/azmisaleem" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/azmisaleem" },
+  { icon: Github, label: "GitHub", href: "https://github.com/azmisal" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/azmisal/" },
   { icon: Globe, label: "Portfolio", href: "https://azmisaleem.dev" },
 ];
 
@@ -31,7 +31,6 @@ const ContactSection = () => {
 
         <motion.a
           href="mailto:azmisaleem96@gmail.com"
-          onClick={() => triggerBatSwarm()}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="inline-block border-2 border-primary bg-primary/10 text-primary px-10 py-4 text-sm tracking-widest uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 box-glow mb-12"
