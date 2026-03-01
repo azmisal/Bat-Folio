@@ -22,7 +22,7 @@ const AboutSection = () => {
             and <span className="text-accent">better tools</span> than you."
           </p>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Full-stack developer with 3+ years of experience building enterprise-grade
+            Full-stack developer with 2+ years of experience building enterprise-grade
             applications at TCS for Fortune 500 clients. B.Tech in Computer Science from
             GEC Thrissur. I architect systems that don't fail when the city is on the line.
           </p>

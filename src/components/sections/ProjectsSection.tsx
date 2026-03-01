@@ -10,7 +10,7 @@ const projects = [
     status: "LIVE",
     stack: ["React", "Node.js", "MongoDB", "CoinGecko API"],
     evidence: "Built real-time crypto trading simulator with portfolio tracking, watchlists, and live market data integration.",
-    url: "https://cryptmaster.example.com",
+    url: "https://cryptmaster-web.vercel.app/",
   },
   {
     name: "FOCUSPILOT",
